@@ -150,3 +150,10 @@ npm run dev
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=saturndec/waoowaoo&type=date&legend=top-left)](https://www.star-history.com/#saturndec/waoowaoo&type=date&legend=top-left)
+
+
+---
+
+## 🏗️ 构建信息
+
+本 fork 仓库配置了自动构建，推送到阿里云镜像仓库以加速国内访问。
