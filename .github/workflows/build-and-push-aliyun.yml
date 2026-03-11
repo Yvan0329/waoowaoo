@@ -47,19 +47,64 @@ jobs:
         run: |
           docker pull mysql:8.0
           docker tag mysql:8.0 registry.cn-hangzhou.aliyuncs.com/yvan329/mysql:8.0
-          docker push registry.cn-hangzhou.aliyuncs.com/yvan329/mysql:8.0
+          
+          # 重试推送最多5次
+          for i in {1..5}; do
+            echo "Attempt $i: Pushing MySQL..."
+            if docker push registry.cn-hangzhou.aliyuncs.com/yvan329/mysql:8.0; then
+              echo "MySQL push succeeded!"
+              break
+            else
+              if [ $i -eq 5 ]; then
+                echo "MySQL push failed after 5 attempts"
+                exit 1
+              fi
+              echo "Push failed, retrying in 10 seconds..."
+              sleep 10
+            fi
+          done
 
       - name: Pull and push Redis
         run: |
           docker pull redis:7-alpine
           docker tag redis:7-alpine registry.cn-hangzhou.aliyuncs.com/yvan329/redis:7-alpine
-          docker push registry.cn-hangzhou.aliyuncs.com/yvan329/redis:7-alpine
+          
+          # 重试推送最多5次
+          for i in {1..5}; do
+            echo "Attempt $i: Pushing Redis..."
+            if docker push registry.cn-hangzhou.aliyuncs.com/yvan329/redis:7-alpine; then
+              echo "Redis push succeeded!"
+              break
+            else
+              if [ $i -eq 5 ]; then
+                echo "Redis push failed after 5 attempts"
+                exit 1
+              fi
+              echo "Push failed, retrying in 10 seconds..."
+              sleep 10
+            fi
+          done
 
       - name: Pull and push MinIO
         run: |
           docker pull minio/minio:RELEASE.2025-02-28T09-55-16Z
           docker tag minio/minio:RELEASE.2025-02-28T09-55-16Z registry.cn-hangzhou.aliyuncs.com/yvan329/minio:RELEASE.2025-02-28T09-55-16Z
-          docker push registry.cn-hangzhou.aliyuncs.com/yvan329/minio:RELEASE.2025-02-28T09-55-16Z
+          
+          # 重试推送最多5次
+          for i in {1..5}; do
+            echo "Attempt $i: Pushing MinIO..."
+            if docker push registry.cn-hangzhou.aliyuncs.com/yvan329/minio:RELEASE.2025-02-28T09-55-16Z; then
+              echo "MinIO push succeeded!"
+              break
+            else
+              if [ $i -eq 5 ]; then
+                echo "MinIO push failed after 5 attempts"
+                exit 1
+              fi
+              echo "Push failed, retrying in 10 seconds..."
+              sleep 10
+            fi
+          done
 
       - name: Build and push waoowaoo app
         uses: docker/build-push-action@v5
