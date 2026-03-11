@@ -43,7 +43,25 @@ jobs:
           username: ${{ secrets.ALIYUN_USERNAME }}
           password: ${{ secrets.ALIYUN_PASSWORD }}
 
-      - name: Build and push
+      - name: Pull and push MySQL
+        run: |
+          docker pull mysql:8.0
+          docker tag mysql:8.0 registry.cn-hangzhou.aliyuncs.com/yvan329/mysql:8.0
+          docker push registry.cn-hangzhou.aliyuncs.com/yvan329/mysql:8.0
+
+      - name: Pull and push Redis
+        run: |
+          docker pull redis:7-alpine
+          docker tag redis:7-alpine registry.cn-hangzhou.aliyuncs.com/yvan329/redis:7-alpine
+          docker push registry.cn-hangzhou.aliyuncs.com/yvan329/redis:7-alpine
+
+      - name: Pull and push MinIO
+        run: |
+          docker pull minio/minio:RELEASE.2025-02-28T09-55-16Z
+          docker tag minio/minio:RELEASE.2025-02-28T09-55-16Z registry.cn-hangzhou.aliyuncs.com/yvan329/minio:RELEASE.2025-02-28T09-55-16Z
+          docker push registry.cn-hangzhou.aliyuncs.com/yvan329/minio:RELEASE.2025-02-28T09-55-16Z
+
+      - name: Build and push waoowaoo app
         uses: docker/build-push-action@v5
         with:
           context: .
